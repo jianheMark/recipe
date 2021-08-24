@@ -2,6 +2,7 @@ package jian.he.recipe.controllers;
 
 import jian.he.recipe.commands.RecipeCommand;
 import jian.he.recipe.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Slf4j
 public class RecipeController {
     private final RecipeService recipeService;
 
@@ -41,6 +43,14 @@ public class RecipeController {
     @PostMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommand command){
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
-        return "redirect:/recipe/show/" +savedCommand.getId();
+        return "redirect:/recipe/" + savedCommand.getId()+ "/show";
+    }
+
+    @GetMapping("recipe/{id}/delete")
+    public String deleteById(@PathVariable String id){
+        log.debug("Deleting ID: " + id);
+
+        recipeService.deleteById(Long.valueOf(id));
+        return "redirect:/";
     }
 }
