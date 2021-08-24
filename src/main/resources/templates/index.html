@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title>Recipe Home</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<h1>My receipes.</h1>
-<table >
-    <tr>
-        <th>ID</th>
-        <th>Description</th>
-    </tr>
 
-    <tr th:each="recipe: ${recipes}">
-        <td th:text="${recipe.id}">John</td>
-        <td th:text="${recipe.description}">Doe</td>
-    </tr>
-</table>
+<div class="container-fluid" style="margin-top: 100px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+<!--                    *@thymesVar id="recipe" type="guru.springframework.domain.Recipe"-->
+                    <h1 class="panel-title" >Recipe Description here</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive" th:if="${ not #lists.isEmpty(recipes)}"></div>
+                    <table class="table table-hover ">
+                        <thead class="thread-inverse">
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tr th:remove="all">
+                            <td>123</td>
+                            <td>Taste Good</td>
+                        </tr>
+                        <tr th:remove="all">
+                            <td>123</td>
+                            <td>Taste Good</td>
+                        </tr>
 
+                        <tr th:each="recipe : ${recipes}">
+<!--                   *@thymesVar id="recipe" type="guru.springframework.domain.Recipe"-->
+                            <td th:text="${recipe.id}">334</td>
+                            <td th:text="${recipe.description}">334</td>
+                            <td><a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/show/'}">View</a></td>
+                            <td><a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/update'}">Update</a></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

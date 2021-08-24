@@ -5,7 +5,9 @@ import jian.he.recipe.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     private final CategoryCommandToCategory categoryConverter;
@@ -26,8 +28,11 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
     @Synchronized
     public Recipe convert(RecipeCommand source) {
         if(source == null){return null;}
+
         final Recipe recipe = new Recipe();
+
         recipe.setId(source.getId());
+        recipe.setDescription(source.getDescription());
         recipe.setSource(source.getSource());
         recipe.setServings(source.getServings());
         recipe.setDifficulty(source.getDifficulty());

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Show Recipe</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+    <div class="container-fluid" style="margin-top: 20px">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+<!--                Command object is the name Spring MVC gives to form-backing beans,-->
+<!--                this is, to objects that model a form’s fields and provide getter and setter methods that will be used by the framework for establishing and obtaining the values input by the user at the browser side.-->
+                    <form  th:object="${recipe}" th:action="@{/recipe/}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+                        <div class="panel-ground">
+                            <div class=" panel panel-primary">
+                                <div class="panel-heading">
+                                    <h1 class="panel-title"> Edit Recipe Information</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label>Recipe Description: </label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{description}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label>Categories </label>
+                                        </div>
+
+                                        <div class="col-md-9 form-group">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="checkbox" value=""/>
+                                                    Cat1</label>
+                                            </div>
+                                            <div class="radio" th:remove="all">
+                                                <label><input type="checkbox" value=""/> Cat2
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label>PrepTime: </label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{prepTime}"/>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>CookTime: </label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{cookTime}"  />
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Difficulty: </label>
+                                            <select class="form-control" >
+                                                <option>Easy</option>
+                                                <option>Medium</option>
+                                                <option>Hard</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label>Servings: </label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{servings}" />
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Source</label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{source}"  />
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label>Url</label>
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <input type="text" class="form-control" th:field="*{url}"  />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <h1 class="panel-title">Ingredients</h1>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a class="btn btn-default" href="#" role="button">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul>
+                                                <li th:remove="all"> 1 Cup of milk</li>
+                                                <li th:remove="all"> 1 Cup of milk</li>
+                                                <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                                <li th:each="ingredient : ${recipe.ingredients}"
+                                                    th:text="${(ingredient.getAmount() + ' ' + ingredient.unitOfMeasure.getDescription() + '-' + ingredient.getDescription())}"> 1 Cup of milk</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h1 class="panel-title">Directions</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 form-group">
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <textarea class="form-control" rows="3" th:field="*{directions}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-primary">
+                                <div class = "panel-heading">
+                                    <h1 class="panel-title">Notes</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 form-group">
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Notes"*/-->
+                                            <!--/*@thymesVar id="recipe" type="jian.he.recipe.domain.Recipe"*/-->
+                                            <textarea class="form-control" rows="3" th:field="*{notes.recipeNotes}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary"> Submit</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
