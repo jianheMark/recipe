@@ -25,8 +25,16 @@
                     <div class="panel-heading">
                         <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
                     </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/image'}" role="button">Change Image</a>
+
+                    </div>
+
+
+
                     <div class="panel-body">
                         <div class="row">
+
                             <div class="col-md-3">
                                 <h5>Categories:</h5>
                             </div>
@@ -38,6 +46,13 @@
                                     <!--*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"-->
                                     <li th:each="catgeory : ${recipe.categories}" th:text="${catgeory.getDescription()}">cat three</li>
                                 </ul>
+                            </div>
+
+                            <div class="col-md-6">
+                                <img src="../../static/images/guacamole400x400WithX.jpg"
+                                     th:src="@{/images/guacamole400x400WithX.jpg}"
+                                     width="200" height="200"
+                                >
                             </div>
                         </div>
                         <div class="row">
