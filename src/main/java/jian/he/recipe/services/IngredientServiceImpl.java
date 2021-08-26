@@ -10,6 +10,7 @@ import jian.he.recipe.repositroies.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -73,8 +74,8 @@ public class IngredientServiceImpl implements IngredientService {
                 Ingredient ingredientFound = ingredientOptional.get();
                 ingredientFound.setDescription(command.getDescription());
                 ingredientFound.setAmount(command.getAmount());
-                System.out.println("/////////////"+ command.getUnitOfMeasureCommand().getId());
-                System.out.println("/////////////"+ command.getUnitOfMeasureCommand().getDescription());
+//                System.out.println("/////////////"+ command.getUnitOfMeasureCommand().getId());
+//
                 ingredientFound.setUnitOfMeasure(
                         unitOfMeasureRepository
                                 .findById(command.getUnitOfMeasureCommand().getId())
@@ -86,11 +87,41 @@ public class IngredientServiceImpl implements IngredientService {
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
-
-            return ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
+            Optional<Ingredient> savedIngredientOptional =   savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
-                    .findFirst()
-                    .get());
+                    .findFirst();
+            if(!savedIngredientOptional.isPresent()){
+                savedIngredientOptional =savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
+                        .filter(recipeIngredients -> recipeIngredients.getAmount().equals(command.getAmount()))
+                        .filter(recipeIngredients -> recipeIngredients.getUnitOfMeasure().getId().equals(command.getUnitOfMeasureCommand().getId()))
+                        .findFirst();
+            }
+
+            return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+        }
+    }
+
+    @Override
+    public void deleteById(Long recipeId, Long idToDelete) {
+        log.debug("Delete ingredient: " + recipeId + ": " + idToDelete);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if(!recipeOptional.isPresent()){log.debug("Recipe ID not found. Id: " + recipeId);}
+        else{
+            Recipe recipe = recipeOptional.get();
+            log.debug("Found Recipe");
+            Optional<Ingredient> ingredientOptional = recipe
+                    .getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(idToDelete))
+                    .findFirst();
+
+            if(ingredientOptional.isPresent()){
+                log.debug("Found ingredient!!!!!!!!!!");
+                Ingredient ingredientToDelete = ingredientOptional.get();
+                ingredientToDelete.setRecipe(null);
+                recipe.getIngredients().remove(ingredientOptional.get());
+                recipeRepository.save(recipe);
+            }
         }
     }
 }

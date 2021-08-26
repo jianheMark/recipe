@@ -1,6 +1,8 @@
 package jian.he.recipe.controllers;
 
 import jian.he.recipe.commands.IngredientCommand;
+import jian.he.recipe.commands.RecipeCommand;
+import jian.he.recipe.commands.UnitOfMeasureCommand;
 import jian.he.recipe.services.IngredientService;
 import jian.he.recipe.services.RecipeService;
 import jian.he.recipe.services.UnitOfMeasureService;
@@ -46,6 +48,23 @@ public class IngredientController {
 
         return "recipe/ingredient/show";
     }
+    @GetMapping("recipe/{recipeId}/ingredient/new")
+    public String newIngredient(@PathVariable String recipeId, Model model){
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+
+        model.addAttribute("ingredient", ingredientCommand);
+
+        ingredientCommand.setUnitOfMeasureCommand(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomlist", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
+    }
+
+
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/update")
     public String updateIngredient(@PathVariable String recipeId,
                                    @PathVariable String id, Model model){
@@ -67,5 +86,15 @@ public class IngredientController {
         log.debug("saved ingredient id: " + savedCommand.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    //todo remake it.
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteIngredientById(@PathVariable String recipeId,
+                             @PathVariable String id){
+        log.debug("Deleting ID: " + id);
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }

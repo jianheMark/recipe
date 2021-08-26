@@ -40,10 +40,10 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>UOM: </label>
-                                    <select class="form-control" name = "uom.id">
+                                    <select class="form-control" name = "unitOfMeasureCommand.id">
                                         <option th:each="uomEach : ${uomlist}"
                                                 th:value="${uomEach.id}"
-                                                th:selected="${uomEach.id.equals(ingredient.getUnitOfMeasureCommand.id)}"
+                                                th:selected="${uomEach.id.equals(ingredient.unitOfMeasureCommand.id)}"
                                                 th:text="${uomEach.description}"
                                         >Each</option></select>
                                 </div>
